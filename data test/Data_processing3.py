@@ -21,7 +21,7 @@ for column in X.select_dtypes(include=['object']).columns:
 correlation_matrix = X.corr()
 
 # Define a threshold for high correlation
-correlation_threshold = 0.85
+correlation_threshold = 0.65
 
 # Identify highly correlated feature pairs
 to_remove = set()
