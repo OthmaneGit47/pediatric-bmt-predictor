@@ -5,12 +5,12 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import LabelEncoder
 
-# Fetch the Bone Marrow Transplantation for Children dataset
-bone_marrow_transplant_children = fetch_ucirepo(id=565)
+df = pd.read_csv('processed_data_v2.csv')
 
-# Extract features and targets as pandas DataFrames
-X = bone_marrow_transplant_children.data.features.copy()
-y = bone_marrow_transplant_children.data.targets.copy()
+
+
+X = df.drop('survival_status', axis=1)  # All columns except 'survival_status'
+y = df['survival_status']  # The target column
 
 # Handle non-numeric columns by applying Label Encoding
 label_encoder = LabelEncoder()
@@ -41,7 +41,8 @@ X_updated = X.drop(columns=to_remove)
 print(f"Removed {len(to_remove)} correlated features: {to_remove}")
 
 # Save the updated dataset
-X_updated.to_csv("updated_dataset.csv", index=False)
+df = pd.concat([X_updated, y], axis=1)
+df.to_csv("processed_data_v3.csv", index=False)
 
 # Display the new correlation matrix
 plt.figure(figsize=(12, 10))
