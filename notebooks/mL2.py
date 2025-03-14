@@ -5,7 +5,7 @@ from sklearn.metrics import classification_report
 
 # Step 1: Load your dataset (adjust this according to your dataset file)
 # For example, assume the dataset is in a CSV file called 'pediatric_bone_marrow.csv'
-df = pd.read_csv('cleaned_dataset.csv')
+df = pd.read_csv('resampled_bone_marrow_dataset.csv')
 
 # Step 2: Preprocess the data (handle missing values, encode categorical features, etc.)
 # Let's assume that your target column is 'survival_status' and the rest are features

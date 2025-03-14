@@ -58,14 +58,6 @@ df[numerical_cols] = df[numerical_cols].fillna(df[numerical_cols].median())
 df = pd.get_dummies(df, drop_first=False)
 print(df.info())
 
-for col in df.select_dtypes(include=['int64']).columns:
-    df[col] = df[col].astype(np.int32)
-
-for col in df.select_dtypes(include=['float64']).columns:
-    df[col] = df[col].astype(np.float32)
-
-print(df.info())
-
 X = df.drop('survival_status', axis=1)  # All columns except 'survival_status'
 y = df['survival_status']  # The target column
 
@@ -95,11 +87,14 @@ X_cleaned = replace_outliers_iqr(X_numeric)
 # 🔹 Étape 3: Reconstruire le dataset propre (avec toutes les colonnes)
 df_cleaned = pd.concat([X_cleaned, X_other_columns, y], axis=1)
 
-# 🔹 Étape 4: Afficher uniquement le dataset propre
-print(df_cleaned.to_string())  # Affiche toutes les lignes
 
-# Option : Afficher seulement les premières lignes si le dataset est trop grand
-# print(df_cleaned.head(20))  # Affiche seulement 20 lignes
+for col in df.select_dtypes(include=['int64']).columns:
+    df[col] = df[col].astype(np.int32)
+
+for col in df.select_dtypes(include=['float64']).columns:
+    df[col] = df[col].astype(np.float32)
+
+print(df.info())
 
 # 🔹 Étape 5: Sauvegarder le dataset nettoyé pour l'utiliser dans un modèle
-df_cleaned.to_csv("cleaned_dataset.csv", index=False)
+df_cleaned.to_csv("cleaned_dataset2.csv", index=False)

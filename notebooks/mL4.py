@@ -4,7 +4,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 
 
-df = pd.read_csv('cleaned_dataset.csv')
+df = pd.read_csv('resampled_bone_marrow_dataset.csv')
 
 
 # Step 3: Separate features (X) and target variable (y)
