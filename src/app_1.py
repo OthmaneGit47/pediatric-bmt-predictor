@@ -3,16 +3,33 @@ import pandas as pd
 import numpy as np
 import os
 
-# Define categorical mappings
-hla_match_mapping = {"10/10": 0, "9/10": 1, "8/10": 2, "7/10": 3}
+# Set Streamlit Page Config
+st.set_page_config(page_title="BMT Success Prediction", page_icon="🩸", layout="wide")
+
+# Encode categorical variables (mappings)
 donor_abo_mapping = {"0": 0, "A": 1, "B": -1, "AB": 2}
+hla_match_mapping = {"10/10": 0, "9/10": 1, "8/10": 2, "7/10": 3}
+
+def preprocess_input(data):
+    """Preprocess user input to match model input."""
+    data["Recipient Gender"] = 1 if data["Recipient Gender"] == "Male" else 0
+    data["Donor ABO"] = donor_abo_mapping[data["Donor ABO"]]
+    data["Recipient ABO"] = donor_abo_mapping[data["Recipient ABO"]]
+    data["HLA Match"] = hla_match_mapping[data["HLA Match"]]
+    return pd.DataFrame([data])
 
 # Streamlit UI
-st.title("Bone Marrow Transplant Success Prediction")
+st.markdown("""
+    <style>
+        .stApp {background-color: #f5f7fa;}
+        .sidebar {background-color: #eef2f7; padding: 10px; border-radius: 10px;}
+        .main-title {text-align: center; color: #00274D; font-size: 36px; font-weight: bold;}
+    </style>
+    """, unsafe_allow_html=True)
+
+st.markdown("<h1 class='main-title'>Bone Marrow Transplant Success Prediction</h1>", unsafe_allow_html=True)
 
 st.sidebar.header("Enter Patient Data")
-
-# Collect input data
 patient_data = {
     "Recipient Gender": st.sidebar.radio("Recipient Gender", ["Male", "Female"]),
     "Stem Cell Source": st.sidebar.radio("Stem Cell Source", ["Peripheral blood", "Bone marrow"]),
@@ -51,8 +68,8 @@ patient_data = {
     "Survival Time (Days)": st.sidebar.slider("Survival Time", 0, 5000, 1000)
 }
 
-# Convert to DataFrame
-input_df = pd.DataFrame([patient_data])
+# Converting input data
+input_df = preprocess_input(patient_data)
 
 # Placeholder Prediction Section
 if st.button("Predict"):
