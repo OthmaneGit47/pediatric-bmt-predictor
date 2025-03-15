@@ -4,8 +4,9 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import LabelEncoder
+import numpy as np
 
-df = pd.read_csv('processed_data_v2.csv')
+df = pd.read_csv('data\processed_data_v2.csv')
 
 
 
@@ -42,6 +43,13 @@ print(f"Removed {len(to_remove)} correlated features: {to_remove}")
 
 # Save the updated dataset
 df = pd.concat([X_updated, y], axis=1)
+
+#Oprimizing the data types
+for col in df.select_dtypes(include=['int64']).columns:
+    df[col] = df[col].astype(np.int32)
+
+for col in df.select_dtypes(include=['float64']).columns:
+    df[col] = df[col].astype(np.float32)
 df.to_csv("processed_data_v3.csv", index=False)
 
 # Display the new correlation matrix
