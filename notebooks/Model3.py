@@ -4,7 +4,7 @@ from sklearn.metrics import classification_report, accuracy_score
 import pandas as pd
 
 
-df = pd.read_csv('processed_data_v3.csv')
+df = pd.read_csv('data\processed_data_v3.csv')
 
 
 
