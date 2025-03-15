@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Load the cleaned dataset
-df = pd.read_csv("cleaned_dataset2.csv")
+df = pd.read_csv("processed_data_v1.csv")
 
 
 # Display the first few rows
@@ -35,10 +35,10 @@ X_train_resampled, y_train_resampled = smote.fit_resample(X_train, y_train)
 print("\nClass Distribution After SMOTE:")
 print(y_train_resampled.value_counts())
 
-# sns.countplot(x=y_train_resampled)
-# plt.title("Class Distribution After SMOTE")
-# plt.show()
+sns.countplot(x=y_train_resampled)
+plt.title("Class Distribution After SMOTE")
+plt.show()
 
 resampled_df = pd.concat([X_train_resampled, y_train_resampled], axis=1)
-resampled_df.to_csv("resampled_bone_marrow_dataset.csv", index=False)
+resampled_df.to_csv("processed_data_v2.csv", index=False)
 

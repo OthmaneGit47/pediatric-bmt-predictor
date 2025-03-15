@@ -2,16 +2,17 @@ import pandas as pd
 from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
+from sklearn.preprocessing import StandardScaler
 
 # Step 1: Load your dataset (adjust this according to your dataset file)
 # For example, assume the dataset is in a CSV file called 'pediatric_bone_marrow.csv'
-df = pd.read_csv('resampled_bone_marrow_dataset.csv')
+df = pd.read_csv('processed_data_v3.csv')
 
 # Step 2: Preprocess the data (handle missing values, encode categorical features, etc.)
 # Let's assume that your target column is 'survival_status' and the rest are features
 # Adjust the following lines based on the dataset structure
 
-from sklearn.preprocessing import StandardScaler
+
 
 scaler = StandardScaler()
 

@@ -97,4 +97,4 @@ for col in df.select_dtypes(include=['float64']).columns:
 print(df.info())
 
 # 🔹 Étape 5: Sauvegarder le dataset nettoyé pour l'utiliser dans un modèle
-df_cleaned.to_csv("cleaned_dataset2.csv", index=False)
+df_cleaned.to_csv("processed_data_v1.csv", index=False)
