@@ -2,12 +2,10 @@ import lightgbm as lgb
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, accuracy_score
 import pandas as pd
+import joblib
 
 
 df = pd.read_csv('data\processed_data_v3.csv')
-
-
-
 
 
 
@@ -41,6 +39,8 @@ model.fit(
 # Make predictions
 y_pred = model.predict(X_test)
 
+
 # Evaluate performance
 print("Accuracy:", accuracy_score(y_test, y_pred))
 print(classification_report(y_test, y_pred))
+joblib.dump(model, "src/lightgbm_model.pkl")
