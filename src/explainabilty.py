@@ -7,7 +7,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report
 
 # Load dataset
-df = pd.read_csv('resampled_bone_marrow_dataset.csv')
+df = pd.read_csv('data\processed_data_v3.csv')
 
 # Handle missing values (if any)
 df.fillna(df.mean(), inplace=True)  # Replace NaN with column mean
