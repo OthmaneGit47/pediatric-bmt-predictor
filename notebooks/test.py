@@ -49,7 +49,3 @@ def test_model_training(sample_data):
     # Evaluate accuracy
     accuracy = accuracy_score(y_test, y_pred)
     assert accuracy > 0.5, f"Model accuracy too low: {accuracy}"  # Should be better than random guessing
-
-
-data = sample_data()
-test_model_training(data)
