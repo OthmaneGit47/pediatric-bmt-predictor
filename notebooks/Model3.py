@@ -6,6 +6,7 @@ import joblib
 
 
 df = pd.read_csv('data\processed_data_v3.csv')
+print(df.head())
 
 
 
