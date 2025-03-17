@@ -41,3 +41,4 @@ print("\nFeature Importance:\n", feature_importance.to_string())
 
 # Save the trained model
 joblib.dump(rf_model, 'randomforest_model1.pkl')
+print("seu")
