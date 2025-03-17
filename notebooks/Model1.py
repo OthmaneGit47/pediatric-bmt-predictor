@@ -6,7 +6,7 @@ import joblib
 
 # Step 1: Load your dataset (adjust this according to your dataset file)
 # For example, assume the dataset is in a CSV file called 'pediatric_bone_marrow.csv'
-df = pd.read_csv('processed_data_v3.csv')
+df = pd.read_csv('data\processed_data_v3.csv')
 
 # Step 2: Preprocess the data (handle missing values, encode categorical features, etc.)
 # Let's assume that your target column is 'survival_status' and the rest are features
@@ -41,3 +41,4 @@ print("\nFeature Importance:\n", feature_importance.to_string())
 
 # Save the trained model
 joblib.dump(rf_model, 'randomforest_model1.pkl')
+print("seu")

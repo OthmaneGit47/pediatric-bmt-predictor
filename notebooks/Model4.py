@@ -2,8 +2,9 @@ import pandas as pd
 import xgboost as xgb
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
+import os
 
-
+print(os.listdir()) 
 df = pd.read_csv('data\processed_data_v3.csv')
 
 

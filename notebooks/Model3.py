@@ -5,8 +5,8 @@ import pandas as pd
 import joblib
 
 
-
-df = pd.read_csv('processed_data_v3.csv')
+df = pd.read_csv('data\processed_data_v3.csv')
+print(df.head())
 
 
 
