@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMT Success Prediction</title>
+    <!-- Include SHAP JavaScript Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/shap/0.39.0/shap.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {background-color: #f5f7fa;}
+        .main-title {text-align: center; color: #00274D; font-size: 36px; font-weight: bold; margin-top: 20px;}
+        .sidebar {background-color: #eef2f7; padding: 20px; border-radius: 10px; margin-top: 20px;}
+        .form-group label {font-weight: bold; margin-top: 10px;}
+        .btn-primary {width: 100%; margin-top: 15px;}
+        .missing-field {border: 2px solid red !important;}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="main-title"><i class="fas fa-hospital-user"></i> BMT Success Prediction</h1>
+        <div class="row">
+            <div class="col-md-4 sidebar">
+                <form method="POST" id="predictionForm">
+                    <h4><i class="fas fa-user-md"></i> Enter Patient Data</h4>
+                    {% for key, value in feature_choices.items() %}
+                    <div class="form-group">
+                        <label for="{{ key }}"><i class="fas fa-info-circle" title="Enter {{ key }}"></i> {{ key }}</label>
+                        {% if value == "number" %}
+                            <input type="number" class="form-control" id="{{ key }}" name="{{ key }}">
+                        {% else %}
+                            <select class="form-control" id="{{ key }}" name="{{ key }}">
+                                <option value="">-- Select --</option>
+                                {% for option in value %}
+                                    <option>{{ option }}</option>
+                                {% endfor %}
+                            </select>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-diagnoses"></i> Predict</button>
+                </form>
+                <br>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-info">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+            {% if shap_html %}
+            <div class="col-md-8">
+                <h4>SHAP Explanation for Prediction</h4>
+                <div id="force_plot">
+                    {{ shap_html | safe }}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <script>
+        document.getElementById("predictionForm").addEventListener("submit", function(event) {
+            let isValid = true;
+            document.querySelectorAll(".form-control").forEach(function(element) {
+                if (!element.value.trim()) {
+                    element.classList.add("missing-field");
+                    isValid = false;
+                } else {
+                    element.classList.remove("missing-field");
+                }
+            });
+            if (!isValid) {
+                event.preventDefault();
+                alert("Please fill in all required fields before submitting.");
+            }
+        });
+    </script>
+</body>
+</html>
