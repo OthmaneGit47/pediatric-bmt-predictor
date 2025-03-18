@@ -1,1 +1,16 @@
-dsqd
+pandas
+sklearn.model_selection
+sklearn.ensemble
+sklearn.metrics 
+joblib
+sklearn.svm
+sklearn.preprocessing
+lightgbm
+xgboost
+Flask
+sklearn.impute
+imblearn.over_sampling
+matplotlib.pyplot
+shap 
+numpy
+os
