@@ -65,28 +65,7 @@ src/
 tests/
     Model_test.py
 
-.gitignore
-README.md
-Installation
-To run this project locally, follow these steps:
 
-Clone the repository:
-
-bash
-Copy
-git clone https://github.com/your-username/bone-marrow-transplant-prediction.git
-cd bone-marrow-transplant-prediction
-Create a virtual environment (optional but recommended):
-
-bash
-Copy
-python -m venv venv
-source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-Install the required packages:
-
-bash
-Copy
-pip install -r requirements.txt
 Usage
 To train the models and generate predictions, follow these steps:
 
