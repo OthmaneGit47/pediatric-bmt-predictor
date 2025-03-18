@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Prediction Result</h1>
+        <p>Welcome, {{ session.username }}! <a href="/logout">Logout</a></p>
+
+        <!-- Display the prediction result -->
+        <div class="result-section">
+            <h2>Prediction Result</h2>
+            <p>{{ result }}</p>
+        </div>
+
+        <!-- Display the two images with legends -->
+        <div class="image-section">
+            <h2>Model Insights</h2>
+            <div class="image-container">
+                <img src="{{ url_for('static', filename='Figure_1.png') }}" alt="SHAP Value Impact">
+                <p><strong>Figure 1:</strong> SHAP value impact on model output for various features.</p>
+            </div>
+            <div class="image-container">
+                <img src="{{ url_for('static', filename='Figure_2.png') }}" alt="Feature Importance via SHAP">
+                <p><strong>Figure 2:</strong> Feature importance via SHAP values.</p>
+            </div>
+        </div>
+
+        <!-- Feedback form for the doctor -->
+        <div class="feedback-section">
+            <h2>Doctor's Feedback</h2>
+            <form action="/submit_feedback" method="POST">
+                <label for="feedback">Is the prediction correct?</label>
+                <select id="feedback" name="feedback" required>
+                    <option value="correct">Correct</option>
+                    <option value="incorrect">Incorrect</option>
+                </select>
+                <label for="comments">Additional Comments:</label>
+                <textarea id="comments" name="comments" rows="4" placeholder="Enter any additional comments..."></textarea>
+                <button type="submit">Submit Feedback</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

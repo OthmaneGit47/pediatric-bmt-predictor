@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, url_for, session
+from flask import Flask, request, render_template, redirect, url_for, session, flash
 import joblib
 import numpy as np
 
@@ -102,8 +102,32 @@ def index():
         # Make a prediction
         prediction = model.predict(input_array)[0]
         result = "Live (Success)" if prediction == 0 else "Die (Failure)"
+        return redirect(url_for('result', result=result))
     
-    return render_template('index.html', features=FEATURES, feature_descriptions=FEATURE_DESCRIPTIONS, result=result)
+    return render_template('index.html', features=FEATURES, feature_descriptions=FEATURE_DESCRIPTIONS)
+
+@app.route('/result')
+def result():
+    # Redirect to login page if not logged in
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    
+    result = request.args.get('result')
+    return render_template('result.html', result=result)
+
+@app.route('/submit_feedback', methods=['POST'])
+def submit_feedback():
+    # Redirect to login page if not logged in
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    
+    feedback = request.form['feedback']
+    comments = request.form['comments']
+    
+    # Here you can save the feedback and comments to a database or file
+    # For now, we'll just flash a message
+    flash(f"Feedback received: {feedback}. Comments: {comments}", "success")
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     app.run(debug=True)
