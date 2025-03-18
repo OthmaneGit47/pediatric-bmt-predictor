@@ -1,11 +1,11 @@
 import joblib
 import pandas as pd
 import numpy as np
-import os
+
 
 # Load the trained model
-print(os.path.exists("randomforest_model1.pkl")) 
-rf_model = joblib.load('src\lightgbm_model.pkl')
+
+rf_model = joblib.load("randomforest_model1.pkl")
 
 # Example of new patient data
 new_patient_data = np.array([[1.0, 1.0, 42.380822, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 6.34, 1.231287, 5.15, 15.0, 18.0, 1000000.0, 330.0, True, False, False, False, False, False, False, True, False, False, False, False, False, False, True, True, False, False, True, False, False, False, False, False, False, True]])
