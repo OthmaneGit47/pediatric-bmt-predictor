@@ -1,82 +1,68 @@
-from flask import Flask, render_template, request, abort
-import lightgbm as lgb
-import pandas as pd
-import pickle
-import shap
+import joblib
 import numpy as np
-import matplotlib.pyplot as plt
-import base64
-import os
-from io import BytesIO
 
-app = Flask(__name__)
+# Load the pre-trained model
+model = joblib.load('randomforest_model1.pkl')
 
-# Load the trained model safely
-model_path = 'model.pkl'
-if os.path.exists(model_path):
-    with open(model_path, 'rb') as f:
-        model = pickle.load(f)
+# Define the features (columns) expected by the model
+# These should match the features used during training
+FEATURES = [
+    'Recipientgender', 'Stemcellsource', 'Donorage', 'Donorage35', 'IIIV', 
+    'Gendermatch', 'DonorABO', 'RecipientABO', 'RecipientRh', 'ABOmatch', 
+    'CMVstatus', 'DonorCMV', 'RecipientCMV', 'Disease', 'Riskgroup', 
+    'Txpostrelapse', 'Diseasegroup', 'HLAmatch', 'HLAmismatch', 'Antigen', 
+    'Allele', 'Recipientage10', 'Recipientageint', 'Relapse', 'aGvHDIIIIV', 
+    'extcGvHD', 'CD34kgx10d6', 'CD3dCD34', 'CD3dkgx10d8', 'Rbodymass', 
+    'ANCrecovery', 'PLTrecovery', 'time_to_aGvHD_III_IV', 'survival_time'
+]
+
+# Example input for a single patient
+# Replace these values with the actual patient's data
+patient_data = {
+    'Recipientgender': 1.0,
+    'Stemcellsource': 1.0,
+    'Donorage': 21.128767,
+    'Donorage35': 0.0,
+    'IIIV': 1.0,
+    'Gendermatch': 0.0,
+    'DonorABO': 0.0,
+    'RecipientABO': 0.0,
+    'RecipientRh': 1.0,
+    'ABOmatch': 0.0,
+    'CMVstatus': 0.0,
+    'DonorCMV': 0.0,
+    'RecipientCMV': 0.0,
+    'Disease': 0.0,
+    'Riskgroup': 1.0,
+    'Txpostrelapse': 0.0,
+    'Diseasegroup': 1.0,
+    'HLAmatch': 0.0,
+    'HLAmismatch': 0.0,
+    'Antigen': -1.0,
+    'Allele': -1.0,
+    'Recipientage10': 1.0,
+    'Recipientageint': 2.0,
+    'Relapse': 0.0,
+    'aGvHDIIIIV': 1.0,
+    'extcGvHD': 1.0,
+    'CD34kgx10d6': 5.08,
+    'CD3dCD34': 0.709805,
+    'CD3dkgx10d8': 7.16,
+    'Rbodymass': 54.1,
+    'ANCrecovery': 15.0,
+    'PLTrecovery': 17.0,
+    'time_to_aGvHD_III_IV': 1000000.0,
+    'survival_time': 20.0
+}
+
+# Convert the patient data into a numpy array
+input_data = np.array([patient_data[feature] for feature in FEATURES]).reshape(1, -1)
+
+# Make a prediction
+prediction = model.predict(input_data)  # Binary prediction (0 or 1)
+
+# Output the result
+if prediction[0] == 0:
+    print("Prediction: Live (Success)")
 else:
-    model = None
-    print("Warning: model.pkl not found. Predictions will not work.")
-
-# Load feature names safely
-data_path = 'processed_data_v3.csv'
-if os.path.exists(data_path):
-    df = pd.read_csv(data_path)
-    if 'survival_status' in df.columns:
-        feature_names = df.drop('survival_status', axis=1).columns.tolist()
-    else:
-        feature_names = df.columns.tolist()
-else:
-    feature_names = []
-    print("Warning: processed_data_v3.csv not found. Feature names unavailable.")
-
-# Function to generate SHAP explanation
-def generate_shap_plot(input_df):
-    if model is None:
-        return None  # Avoid errors if model is missing
-    
-    explainer = shap.Explainer(model)
-    shap_values = explainer(input_df)
-    
-    plt.figure()
-    shap.plots.waterfall(shap_values[0], show=False)
-    
-    buf = BytesIO()
-    plt.savefig(buf, format='png')
-    buf.seek(0)
-    encoded_img = base64.b64encode(buf.read()).decode('utf-8')
-    buf.close()
-    
-    return encoded_img
-
-@app.route('/', methods=['GET', 'POST'])
-def index():
-    prediction = None
-    shap_img = None
-    result = None
-
-    if request.method == 'POST' and model:
-        try:
-            # Extract input values from form
-            input_data = [float(request.form[feature]) for feature in feature_names]
-            input_df = pd.DataFrame([input_data], columns=feature_names)
-            
-            # Predict survival status
-            prediction = model.predict(input_df)[0]
-            result = "Success" if prediction == 1 else "Failure"
-            
-            # Generate SHAP explanation
-            shap_img = generate_shap_plot(input_df)
-        except Exception as e:
-            result = f"Error: {str(e)}"
-
-    # Check if index.html exists before rendering
-    if not os.path.exists('templates/index.html'):
-        return "Error: Missing index.html file in the templates folder.", 500
-    
-    return render_template('index.html', feature_names=feature_names, prediction=result, shap_img=shap_img)
-
-if __name__ == '__main__':
-    app.run(debug=True)
+    print("Prediction: Die (Failure)")

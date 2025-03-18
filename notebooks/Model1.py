@@ -3,10 +3,10 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, accuracy_score
 import joblib
-
 # Step 1: Load your dataset (adjust this according to your dataset file)
 # For example, assume the dataset is in a CSV file called 'pediatric_bone_marrow.csv'
-df = pd.read_csv('data\processed_data_v3.csv')
+df = pd.read_csv('data\Processed_data.csv')
+print(df.info())
 
 # Step 2: Preprocess the data (handle missing values, encode categorical features, etc.)
 # Let's assume that your target column is 'survival_status' and the rest are features
@@ -37,8 +37,10 @@ print("Classification Report:\n", classification_report(y_test, y_pred))
 
 # If needed, you can also access feature importance
 feature_importance = pd.DataFrame(rf_model.feature_importances_, index=X.columns, columns=['Importance'])
-print("\nFeature Importance:\n", feature_importance.to_string())
+print("\nFeature Importance:\n", feature_importance.info())
+
+
 
 # Save the trained model
 joblib.dump(rf_model, 'randomforest_model1.pkl')
-print("seu")
+

@@ -5,7 +5,7 @@ from sklearn.metrics import classification_report
 import os
 
 print(os.listdir()) 
-df = pd.read_csv('data\processed_data_v3.csv')
+df = pd.read_csv('data\Processed_data.csv')
 
 
 # Step 3: Separate features (X) and target variable (y)
